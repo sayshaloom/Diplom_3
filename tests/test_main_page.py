@@ -25,4 +25,12 @@ class TestMainPage:
         page = MainPage(driver)
         page.open(Urls.MAIN)
         page.click_ingredient()
-        assert page.get_popup_title() == "Детали ингредиента"    
+        assert page.get_popup_title() == "Детали ингредиента"
+
+    @allure.title("Окно ингредиента закрывается по крестику")
+    def test_close_popup_by_cross(self, driver):
+       page = MainPage(driver)
+       page.open(Urls.MAIN)
+       page.click_ingredient()
+       page.click_close_popup()
+       assert page.is_popup_closed()

@@ -20,4 +20,12 @@ class MainPage(BasePage):
 
     @allure.step("Получить заголовок окна ингредиента")
     def get_popup_title(self):
-        return self.get_text(MainPageLocators.INGREDIENT_POPUP_TITLE)    
+        return self.get_text(MainPageLocators.INGREDIENT_POPUP_TITLE)
+
+    @allure.step("Закрыть окно ингредиента крестиком")
+    def click_close_popup(self):
+       self.click(MainPageLocators.CLOSE_POPUP_BUTTON)
+
+    @allure.step("Проверить, что окно ингредиента закрылось")
+    def is_popup_closed(self):
+       return self.wait_until_invisible(MainPageLocators.INGREDIENT_POPUP_TITLE)

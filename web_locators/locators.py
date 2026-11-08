@@ -8,3 +8,4 @@ class MainPageLocators:
 
     INGREDIENT = (By.XPATH, "//p[text()='Краторная булка N-200i']")
     INGREDIENT_POPUP_TITLE = (By.XPATH, "//h2[text()='Детали ингредиента']")
+    CLOSE_POPUP_BUTTON = (By.XPATH, "//section[contains(@class, 'Modal_modal_opened')]//button")

@@ -23,3 +23,7 @@ class BasePage:
     @allure.step("Получить текст элемента {locator}")
     def get_text(self, locator):
         return self.wait_until_visible(locator).text
+
+    @allure.step("Дождаться исчезновения элемента {locator}")
+    def wait_until_invisible(self, locator):
+       return WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(locator))
