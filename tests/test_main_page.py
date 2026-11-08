@@ -12,3 +12,10 @@ class TestMainPage:
         page.open(Urls.FEED)
         page.click_constructor()
         assert driver.current_url == Urls.MAIN
+
+    @allure.title("Переход в «Ленту заказов» по клику на кнопку")
+    def test_click_order_feed(self, driver):
+        page = MainPage(driver)
+        page.open(Urls.MAIN)
+        page.click_order_feed()
+        assert driver.current_url == Urls.FEED

@@ -11,5 +11,5 @@ class MainPage(BasePage):
         self.click(MainPageLocators.CONSTRUCTOR_BUTTON)
 
     @allure.step("Перейти в «Ленту заказов»")
-    def click_orders_list(self):
+    def click_order_feed(self):
         self.click(MainPageLocators.ORDER_FEED_BUTTON)
