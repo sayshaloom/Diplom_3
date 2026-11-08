@@ -29,3 +29,11 @@ class MainPage(BasePage):
     @allure.step("Проверить, что окно ингредиента закрылось")
     def is_popup_closed(self):
        return self.wait_until_invisible(MainPageLocators.INGREDIENT_POPUP_TITLE)
+
+    @allure.step("Перетащить булочку в конструктор")
+    def drag_bun_to_constructor(self):
+        self.drag_and_drop(MainPageLocators.INGREDIENT, MainPageLocators.BUN_DROP_ZONE)
+
+    @allure.step("Получить значение счётчика ингредиента")
+    def get_ingredient_counter(self):
+        return self.get_text(MainPageLocators.INGREDIENT_COUNTER)

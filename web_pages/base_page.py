@@ -1,6 +1,7 @@
 import allure
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver import ActionChains
 
 
 class BasePage:
@@ -27,3 +28,15 @@ class BasePage:
     @allure.step("Дождаться исчезновения элемента {locator}")
     def wait_until_invisible(self, locator):
        return WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(locator))
+
+    @allure.step("Перетащить элемент {source} в {target}")
+    def drag_and_drop(self, source, target):
+        source_element = self.wait_until_visible(source)
+        target_element = self.wait_until_visible(target)
+        ActionChains(self.driver).drag_and_drop(source_element, target_element).perform()
+
+    from selenium.webdriver.support import expected_conditions as EC
+
+    @allure.step("Дождаться текста {expected} в элементе {locator}")
+    def wait_for_text(self, locator, expected):
+        return WebDriverWait(self.driver, 10).until(EC.text_to_be_present_in_element(locator, expected))
