@@ -37,3 +37,19 @@ class MainPage(BasePage):
     @allure.step("Получить значение счётчика ингредиента")
     def get_ingredient_counter(self):
         return self.get_text(MainPageLocators.INGREDIENT_COUNTER)
+
+    @allure.step("Дождаться окна с номером заказа и получить номер")
+    def get_order_number(self):
+        return self.wait_until_visible(MainPageLocators.ORDER_NUMBER).text
+
+    @allure.step("Нажать «Оформить заказ»")
+    def click_create_order(self):
+        self.click(MainPageLocators.CREATE_ORDER_BUTTON)
+
+    @allure.step("Получить счётчик «Выполнено за всё время»")
+    def get_orders_total(self):
+        return self.get_text(MainPageLocators.ORDERS_TOTAL_COUNTER)
+
+    @allure.step("Получить счётчик «Выполнено за сегодня»")
+    def get_orders_today(self):
+        return self.get_text(MainPageLocators.ORDERS_TODAY_COUNTER)
