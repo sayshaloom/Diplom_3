@@ -19,3 +19,10 @@ class TestMainPage:
         page.open(Urls.MAIN)
         page.click_order_feed()
         assert driver.current_url == Urls.FEED
+
+    @allure.title("Клик по ингредиенту открывает окно с деталями")
+    def test_ingredient_popup_opens(self, driver):
+        page = MainPage(driver)
+        page.open(Urls.MAIN)
+        page.click_ingredient()
+        assert page.get_popup_title() == "Детали ингредиента"    
