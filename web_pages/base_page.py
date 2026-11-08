@@ -21,6 +21,10 @@ class BasePage:
     def click(self, locator):
            self.wait_until_visible(locator).click()
 
+    @allure.step("Ввести текст {text} в элемент {locator}")
+    def set_text(self, locator, text):
+        self.wait_until_visible(locator).send_keys(text)       
+
     @allure.step("Получить текст элемента {locator}")
     def get_text(self, locator):
         return self.wait_until_visible(locator).text
@@ -34,8 +38,6 @@ class BasePage:
         source_element = self.wait_until_visible(source)
         target_element = self.wait_until_visible(target)
         ActionChains(self.driver).drag_and_drop(source_element, target_element).perform()
-
-    from selenium.webdriver.support import expected_conditions as EC
 
     @allure.step("Дождаться текста {expected} в элементе {locator}")
     def wait_for_text(self, locator, expected):
