@@ -6,9 +6,12 @@ from data.urls import Urls
 from data.helpers import generate_user_payload
 
 
-@pytest.fixture
-def driver():
-    driver = webdriver.Chrome()
+@pytest.fixture(params=["chrome", "firefox"])
+def driver(request):
+    if request.param == "chrome":
+        driver = webdriver.Chrome()
+    else:
+        driver = webdriver.Firefox()    
     driver.maximize_window()
     yield driver
     driver.quit()
