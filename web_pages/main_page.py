@@ -24,11 +24,11 @@ class MainPage(BasePage):
 
     @allure.step("Закрыть окно ингредиента крестиком")
     def click_close_popup(self):
-       self.click(MainPageLocators.CLOSE_POPUP_BUTTON)
+        self.click(MainPageLocators.CLOSE_POPUP_BUTTON)
 
     @allure.step("Проверить, что окно ингредиента закрылось")
     def is_popup_closed(self):
-       return self.wait_until_invisible(MainPageLocators.INGREDIENT_POPUP_TITLE)
+        return self.wait_until_invisible(MainPageLocators.INGREDIENT_POPUP_TITLE)
 
     @allure.step("Перетащить булочку в конструктор")
     def drag_bun_to_constructor(self):
@@ -40,7 +40,7 @@ class MainPage(BasePage):
 
     @allure.step("Дождаться окна с номером заказа и получить номер")
     def get_order_number(self):
-        return self.wait_until_visible(MainPageLocators.ORDER_NUMBER).text
+        return self.get_text(MainPageLocators.ORDER_NUMBER)
 
     @allure.step("Нажать «Оформить заказ»")
     def click_create_order(self):

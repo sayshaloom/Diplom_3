@@ -1,7 +1,7 @@
 import pytest
 import requests
-
 from selenium import webdriver
+
 from data.urls import Urls
 from data.helpers import generate_user_payload
 
@@ -11,10 +11,11 @@ def driver(request):
     if request.param == "chrome":
         driver = webdriver.Chrome()
     else:
-        driver = webdriver.Firefox()    
+        driver = webdriver.Firefox()
     driver.maximize_window()
     yield driver
     driver.quit()
+
 
 @pytest.fixture
 def user():
@@ -25,4 +26,4 @@ def user():
     yield payload
 
     if access_token:
-        requests.delete(Urls.API_USER, headers={"Authorization": access_token})    
+        requests.delete(Urls.API_USER, headers={"Authorization": access_token})

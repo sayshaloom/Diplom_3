@@ -1,8 +1,9 @@
 import allure
 
 from data.urls import Urls
-from web_pages.main_page import MainPage
 from web_locators.locators import MainPageLocators
+from web_pages.main_page import MainPage
+
 
 
 class TestMainPage:
@@ -30,11 +31,11 @@ class TestMainPage:
 
     @allure.title("Окно ингредиента закрывается по крестику")
     def test_close_popup_by_cross(self, driver):
-       page = MainPage(driver)
-       page.open(Urls.MAIN)
-       page.click_ingredient()
-       page.click_close_popup()
-       assert page.is_popup_closed()
+        page = MainPage(driver)
+        page.open(Urls.MAIN)
+        page.click_ingredient()
+        page.click_close_popup()
+        assert page.is_popup_closed()
 
     @allure.title("Счётчик ингредиента увеличивается при добавлении в заказ")
     def test_ingredient_counter_increases(self, driver):
@@ -43,4 +44,4 @@ class TestMainPage:
         assert page.get_ingredient_counter() == "0"
         page.drag_bun_to_constructor()
         page.wait_for_text(MainPageLocators.INGREDIENT_COUNTER, "2")
-        assert page.get_ingredient_counter() == "2"  
+        assert page.get_ingredient_counter() == "2"
