@@ -4,6 +4,7 @@ from selenium import webdriver
 
 from data.urls import Urls
 from data.helpers import generate_user_payload
+from web_pages.main_page import MainPage
 
 
 @pytest.fixture(params=["chrome", "firefox"])
@@ -15,6 +16,13 @@ def driver(request):
     driver.maximize_window()
     yield driver
     driver.quit()
+
+
+@pytest.fixture
+def main_page(driver):
+    page = MainPage(driver)
+    page.open(Urls.MAIN)
+    return page
 
 
 @pytest.fixture

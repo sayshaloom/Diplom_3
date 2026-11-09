@@ -1,5 +1,8 @@
 import allure
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
+from data.urls import Urls
 from web_locators.locators import LoginPageLocators
 from web_pages.base_page import BasePage
 
@@ -23,3 +26,4 @@ class LoginPage(BasePage):
         self.set_email(email)
         self.set_password(password)
         self.click_login()
+        WebDriverWait(self.driver, 10).until_not(EC.url_contains(Urls.LOGIN))

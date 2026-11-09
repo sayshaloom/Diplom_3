@@ -1,4 +1,6 @@
 import allure
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 from web_locators.locators import MainPageLocators
 from web_pages.base_page import BasePage
@@ -38,6 +40,10 @@ class MainPage(BasePage):
     def get_ingredient_counter(self):
         return self.get_text(MainPageLocators.INGREDIENT_COUNTER)
 
+    @allure.step("Дождаться значения {expected} у счётчика ингредиента")
+    def wait_for_ingredient_counter(self, expected):
+        self.wait_for_text(MainPageLocators.INGREDIENT_COUNTER, expected)
+
     @allure.step("Дождаться окна с номером заказа и получить номер")
     def get_order_number(self):
         return self.get_text(MainPageLocators.ORDER_NUMBER)
@@ -50,6 +56,21 @@ class MainPage(BasePage):
     def get_orders_total(self):
         return self.get_text(MainPageLocators.ORDERS_TOTAL_COUNTER)
 
+    @allure.step("Дождаться значения {expected} у счётчика «за всё время»")
+    def wait_for_orders_total(self, expected):
+        self.wait_for_text(MainPageLocators.ORDERS_TOTAL_COUNTER, expected)
+
     @allure.step("Получить счётчик «Выполнено за сегодня»")
     def get_orders_today(self):
         return self.get_text(MainPageLocators.ORDERS_TODAY_COUNTER)
+
+    @allure.step("Дождаться значения {expected} у счётчика «за сегодня»")
+    def wait_for_orders_today(self, expected):
+        self.wait_for_text(MainPageLocators.ORDERS_TODAY_COUNTER, expected)
+
+    @allure.step("Дождаться номера {order_number} в разделе «В работе»")
+    def wait_order_in_progress(self, order_number):
+        number = f"{int(order_number):05d}"
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(MainPageLocators.IN_PROGRESS_LIST, number)
+        )

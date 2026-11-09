@@ -13,10 +13,12 @@ class MainPageLocators:
     BUN_DROP_ZONE = (By.XPATH, "//span[contains(@class, 'constructor-element__text') and contains(text(), 'Перетяните булочку сюда (верх)')]")
 
     CREATE_ORDER_BUTTON = (By.XPATH, "//button[text()='Оформить заказ']")
-    ORDER_NUMBER = (By.XPATH, "//p[text()='идентификатор заказа']/preceding-sibling::*[1]")
+    ORDER_NUMBER = (By.XPATH, "//h2[contains(@class, 'text_type_digits-large')]")
 
-    ORDERS_TOTAL_COUNTER = (By.XPATH, "//p[text()='Выполнено за все время:']/following-sibling::*[1]")
-    ORDERS_TODAY_COUNTER = (By.XPATH, "//p[text()='Выполнено за сегодня:']/following-sibling::*[1]")
+    IN_PROGRESS_LIST = (By.XPATH, "//p[text()='В работе:']/following-sibling::ul[contains(@class, 'OrderFeed_orderList') and not(contains(@class, 'Ready'))]")
+
+    ORDERS_TOTAL_COUNTER = (By.XPATH, "//p[text()='Выполнено за все время:']/..//p[contains(@class, 'OrderFeed_number')]")
+    ORDERS_TODAY_COUNTER = (By.XPATH, "//p[text()='Выполнено за сегодня:']/..//p[contains(@class, 'OrderFeed_number')]")
 
 
 class LoginPageLocators:

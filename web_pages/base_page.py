@@ -80,3 +80,9 @@ class BasePage:
     @allure.step("Получить текущий адрес страницы")
     def get_current_url(self):
         return self.driver.current_url
+
+    @allure.step("Открыть страницу {url} в новой вкладке")
+    def open_in_new_tab(self, url):
+        self.driver.switch_to.new_window("tab")
+        self.driver.get(url)
+        return self.driver.current_window_handle

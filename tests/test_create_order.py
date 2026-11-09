@@ -1,9 +1,7 @@
 import allure
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 
+from data.test_data import COUNTER_AFTER
 from data.urls import Urls
-from web_locators.locators import MainPageLocators
 from web_pages.login_page import LoginPage
 from web_pages.main_page import MainPage
 
@@ -16,7 +14,6 @@ class TestCreateOrder:
         login_page = LoginPage(driver)
         login_page.open(Urls.LOGIN)
         login_page.login(user["email"], user["password"])
-        WebDriverWait(driver, 10).until_not(EC.url_contains("/login"))
 
         # 2. Запоминаем счётчики до заказа
         page = MainPage(driver)
@@ -27,16 +24,37 @@ class TestCreateOrder:
         # 3. Собираем бургер и оформляем заказ
         page.open(Urls.MAIN)
         page.drag_bun_to_constructor()
-        page.wait_for_text(MainPageLocators.INGREDIENT_COUNTER, "2")
+        page.wait_for_ingredient_counter(COUNTER_AFTER)
         page.click_create_order()
         order_number = page.get_order_number()
         assert order_number.isdigit()
 
         # 4. Возвращаемся в ленту и ждём обновления счётчиков
         page.open(Urls.FEED)
-        page.wait_for_text(MainPageLocators.ORDERS_TOTAL_COUNTER, str(total_before + 1))
-        page.wait_for_text(MainPageLocators.ORDERS_TODAY_COUNTER, str(today_before + 1))
+        page.wait_for_orders_total(str(total_before + 1))
+        page.wait_for_orders_today(str(today_before + 1))
 
         # 5. Итоговая проверка
         assert int(page.get_orders_total()) == total_before + 1
         assert int(page.get_orders_today()) == today_before + 1
+
+    @allure.title("Номер заказа появляется в разделе «В работе»")
+    def test_order_number_in_progress(self, driver, user):
+        login_page = LoginPage(driver)
+        login_page.open(Urls.LOGIN)
+        login_page.login(user["email"], user["password"])
+
+        page = MainPage(driver)
+        page.open(Urls.MAIN)
+        page.drag_bun_to_constructor()
+        page.wait_for_ingredient_counter(COUNTER_AFTER)
+
+        main_window = driver.current_window_handle
+        feed_window = page.open_in_new_tab(Urls.FEED)
+
+        driver.switch_to.window(main_window)
+        page.click_create_order()
+        order_number = page.get_order_number()
+
+        driver.switch_to.window(feed_window)
+        page.wait_order_in_progress(order_number)
