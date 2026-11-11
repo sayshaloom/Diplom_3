@@ -93,6 +93,18 @@ class BasePage:
             EC.text_to_be_present_in_element(locator, expected)
         )
 
+    @allure.step("Дождаться стабильного значения элемента {locator}")
+    def wait_until_text_stable(self, locator, timeout=10):
+        readings = []
+
+        def text_is_stable(driver):
+            text = driver.find_element(*locator).text
+            readings.append(text)
+            return len(readings) >= 2 and text.isdigit() and readings[-1] == readings[-2]
+
+        WebDriverWait(self.driver, timeout).until(text_is_stable)
+        return readings[-1]
+
     @allure.step("Дождаться выхода с адреса {url}")
     def wait_until_url_not_contains(self, url):
         return WebDriverWait(self.driver, 10).until_not(EC.url_contains(url))
