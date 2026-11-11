@@ -86,3 +86,21 @@ class BasePage:
         self.driver.switch_to.new_window("tab")
         self.driver.get(url)
         return self.driver.current_window_handle
+
+    @allure.step("Дождаться текста {expected} в элементе {locator}")
+    def wait_for_text(self, locator, expected, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(
+            EC.text_to_be_present_in_element(locator, expected)
+        )
+
+    @allure.step("Дождаться выхода с адреса {url}")
+    def wait_until_url_not_contains(self, url):
+        return WebDriverWait(self.driver, 10).until_not(EC.url_contains(url))
+
+    @allure.step("Запомнить текущее окно")
+    def current_window(self):
+        return self.driver.current_window_handle
+
+    @allure.step("Переключиться на окно {handle}")
+    def switch_to_window(self, handle):
+        self.driver.switch_to.window(handle)

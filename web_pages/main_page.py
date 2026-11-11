@@ -1,6 +1,4 @@
 import allure
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 
 from web_locators.locators import MainPageLocators
 from web_pages.base_page import BasePage
@@ -71,6 +69,16 @@ class MainPage(BasePage):
     @allure.step("Дождаться номера {order_number} в разделе «В работе»")
     def wait_order_in_progress(self, order_number):
         number = f"{int(order_number):05d}"
-        WebDriverWait(self.driver, 30).until(
-            EC.text_to_be_present_in_element(MainPageLocators.IN_PROGRESS_LIST, number)
-        )
+        return self.wait_for_text(MainPageLocators.IN_PROGRESS_LIST, number, timeout=30)
+
+    @allure.step("Оформить заказ и проверить номер в разделе «В работе»")
+    def check_order_in_progress(self, feed_url):
+        main_window = self.current_window()
+        feed_window = self.open_in_new_tab(feed_url)
+
+        self.switch_to_window(main_window)
+        self.click_create_order()
+        order_number = self.get_order_number()
+
+        self.switch_to_window(feed_window)
+        return self.wait_order_in_progress(order_number)

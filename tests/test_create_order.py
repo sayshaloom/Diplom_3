@@ -49,12 +49,4 @@ class TestCreateOrder:
         page.drag_bun_to_constructor()
         page.wait_for_ingredient_counter(COUNTER_AFTER)
 
-        main_window = driver.current_window_handle
-        feed_window = page.open_in_new_tab(Urls.FEED)
-
-        driver.switch_to.window(main_window)
-        page.click_create_order()
-        order_number = page.get_order_number()
-
-        driver.switch_to.window(feed_window)
-        page.wait_order_in_progress(order_number)
+        assert page.check_order_in_progress(Urls.FEED)
