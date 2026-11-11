@@ -1,4 +1,5 @@
 import allure
+import time
 
 from web_locators.locators import MainPageLocators
 from web_pages.base_page import BasePage
@@ -42,9 +43,17 @@ class MainPage(BasePage):
     def wait_for_ingredient_counter(self, expected):
         self.wait_for_text(MainPageLocators.INGREDIENT_COUNTER, expected)
 
-    @allure.step("Дождаться окна с номером заказа и получить номер")
+    @allure.step("Дождаться окончательного номера заказа в окне")
     def get_order_number(self):
-        return self.get_text(MainPageLocators.ORDER_NUMBER)
+        element = self.wait_until_visible(MainPageLocators.ORDER_NUMBER)
+        previous = None
+        for _ in range(40):
+            current = element.text
+            if current.isdigit() and current == previous:
+                return current
+            previous = current
+            time.sleep(0.25)
+        return previous
 
     @allure.step("Нажать «Оформить заказ»")
     def click_create_order(self):
@@ -73,12 +82,7 @@ class MainPage(BasePage):
 
     @allure.step("Оформить заказ и проверить номер в разделе «В работе»")
     def check_order_in_progress(self, feed_url):
-        main_window = self.current_window()
-        feed_window = self.open_in_new_tab(feed_url)
-
-        self.switch_to_window(main_window)
         self.click_create_order()
         order_number = self.get_order_number()
-
-        self.switch_to_window(feed_window)
+        self.open(feed_url)
         return self.wait_order_in_progress(order_number)
